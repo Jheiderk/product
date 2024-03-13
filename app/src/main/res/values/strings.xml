@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">productApp</string>
+
+    <string-array name="option">
+        <item>lighting</item>
+        <item>home-decoration</item>
+        <item>motorcycle</item>
+    </string-array>
+
+
+
+    <string name="products">products</string>
+    <string name="next">next</string>
+    <string name="category">category</string>
+
 </resources>

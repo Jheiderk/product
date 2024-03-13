@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="background">#756CCD69</color>
+    <color name="spinnerColor">#FFFFFFFF</color>
+    <color name="red">#FFFFFFFF</color>
+    <color name="blue">#FFFFFFFF</color>
+    <color name="yellow">#FFFFFFFF</color>
 </resources>
