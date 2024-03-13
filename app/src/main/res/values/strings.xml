@@ -2,11 +2,10 @@
     <string name="app_name">productApp</string>
 
     <string-array name="option">
-        <item>lighting</item>
+        <item>smartphones</item>
         <item>home-decoration</item>
         <item>motorcycle</item>
     </string-array>
-
 
 
     <string name="products">products</string>

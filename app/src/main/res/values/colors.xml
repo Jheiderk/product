@@ -10,7 +10,7 @@
 
     <color name="background">#756CCD69</color>
     <color name="spinnerColor">#FFFFFFFF</color>
-    <color name="red">#FFFFFFFF</color>
+    <color name="text_background">#261270</color>
     <color name="blue">#FFFFFFFF</color>
     <color name="yellow">#FFFFFFFF</color>
 </resources>
