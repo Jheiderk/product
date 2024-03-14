@@ -1,9 +1,11 @@
 package com.example.productapp.activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.productapp.adapter.ProductAdapter
 import com.example.productapp.data.CategoryProduct
@@ -16,7 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity2 : AppCompatActivity() {
-    private lateinit var list:List<Product>
+    private var list:List<Product> = listOf()
     private lateinit var binding: ActivityMain2Binding
     private lateinit var adapter: ProductAdapter
 
@@ -27,16 +29,39 @@ class MainActivity2 : AppCompatActivity() {
         setContentView(binding.root)
 
         title = intent.getStringExtra("Category")
-        Log.i("HTTP", "$title")
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title =title
 
         searchCategoryProduct(title!!)
-        adapter = ProductAdapter{
-            adapterUI(it)
-        }
+
+
+
+        adapter = ProductAdapter(this, list, { position ->
+            adapterUI(position)
+        }, { position -> onFavorite(position) }
+        )
+
         binding.recyclerView.adapter = adapter
 
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
+    }
+
+    private fun onFavorite(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // Manejar el clic del botón de retroceso
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
     fun adapterUI(position:Int){
         val productList =list[position]

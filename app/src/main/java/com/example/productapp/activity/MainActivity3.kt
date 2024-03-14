@@ -2,7 +2,10 @@ package com.example.productapp.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import com.example.productapp.R
 import com.example.productapp.databinding.ActivityMain3Binding
+
 import com.squareup.picasso.Picasso
 
 class MainActivity3 : AppCompatActivity() {
@@ -25,11 +28,25 @@ class MainActivity3 : AppCompatActivity() {
         visualReform()
 
 
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // Manejar el clic del botón de retroceso
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun visualReform() {
+        supportActionBar?.title =title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         binding.textTitle.text=title
-        binding.textPrice2.text=price
+        binding.textPrice2.text=getString(R.string.dollar, price)
         binding.ratingText.text=rating
         Picasso.get().load(image).into(binding.image)
         binding.stockText.text=stock

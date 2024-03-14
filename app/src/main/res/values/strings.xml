@@ -7,7 +7,7 @@
         <item>motorcycle</item>
     </string-array>
 
-
+    <string name="dollar">%s$</string>
     <string name="products">products</string>
     <string name="next">next</string>
     <string name="category">category</string>
