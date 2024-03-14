@@ -5,6 +5,23 @@
         <item>smartphones</item>
         <item>home-decoration</item>
         <item>motorcycle</item>
+        <item>laptops</item>
+        <item>fragrances</item>
+        <item>skincare</item>
+        <item>groceries</item>
+        <item>furniture</item>
+        <item>tops</item>
+        <item>womens-dresses</item>
+        <item>womens-shoes</item>
+        <item>mens-shirts</item>
+        <item>mens-shoes</item>
+        <item>mens-watches</item>
+        <item>womens-watches</item>
+        <item>womens-bags</item>
+        <item>womens-jewellery</item>
+        <item>sunglasses</item>
+        <item>automotive</item>
+        <item>lighting</item>
     </string-array>
 
     <string name="dollar">%s$</string>
@@ -15,5 +32,11 @@
     <string name="stock">Stock</string>
     <string name="description">Description</string>
     <string name="brand">Brand</string>
+    <string name="exit">Go out?</string>
+    <string name="sure_or_not">Are you sure you want to go out?</string>
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
+
+
 
 </resources>

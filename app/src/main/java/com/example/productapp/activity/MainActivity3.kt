@@ -1,31 +1,47 @@
 package com.example.productapp.activity
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import com.example.productapp.R
+import com.example.productapp.data.CategoryProduct
+import com.example.productapp.data.Product
 import com.example.productapp.databinding.ActivityMain3Binding
 
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity3 : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMain3Binding
 
-    private var title: String? = null
-    private var price: String? = null
-    private var rating: String? = null
-    private var image: String? = null
-    private var stock: String? = null
-    private var description: String? = null
-    private var brand: String? = null
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var binding: ActivityMain3Binding
+    private lateinit var list:Product
+
+
+    private var id: String?=null
+    private var title: String?=null
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain3Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         initUI()
-        visualReform()
+
+        Log.i("http", id.toString())
+        searchCategoryProduct(id!!)
 
 
 
@@ -42,25 +58,77 @@ class MainActivity3 : AppCompatActivity() {
     }
 
     private fun visualReform() {
-        supportActionBar?.title =title
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.textTitle.text=title
-        binding.textPrice2.text=getString(R.string.dollar, price)
-        binding.ratingText.text=rating
-        Picasso.get().load(image).into(binding.image)
-        binding.stockText.text=stock
-        binding.descriptionText.text=description
-        binding.brandText.text=brand
+
+
+        binding.textTitle.text= list.title
+        binding.textPrice2.text=getString(R.string.dollar, list.price)
+        binding.ratingText.text=list.rating
+        Picasso.get().load(list.thumbnail).into(binding.image)
+        binding.stockText.text=list.stock
+        binding.descriptionText.text=list.description
+        binding.brandText.text=list.brand
+
+        val isFavorite = sharedPreferences.getBoolean("favorito_${title}", false)
+        binding.favoriteImage.setImageResource(if (isFavorite) R.drawable.ic_favorite_on else R.drawable.ic_favorite_off)
+
+        // Manejar el clic en el icono de favorito
+        binding.favoriteImage.setOnClickListener {
+            toggleFavoriteState()
+        }
+
+
+    }
+
+    private fun toggleFavoriteState() {
+        // Obtener el estado actual de favorito
+        val isFavorite = sharedPreferences.getBoolean("favorito_${title}", false)
+
+        // Cambiar el estado de favorito
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("favorito_${title}", !isFavorite)
+        editor.apply()
+
+        // Actualizar la imagen del icono de favorito
+        binding.favoriteImage.setImageResource(if (!isFavorite) R.drawable.ic_favorite_on else R.drawable.ic_favorite_off)
     }
 
     private fun initUI() {
-        title = intent.getStringExtra("title")
-        price = intent.getStringExtra("price")
-        rating = intent.getStringExtra("rating")
-        image = intent.getStringExtra("image")
-        stock = intent.getStringExtra("stock")
-        description= intent.getStringExtra("description")
-        brand = intent.getStringExtra("brand")
+
+        title= intent.getStringExtra("title")
+        id= intent.getStringExtra("id")
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        sharedPreferences = getSharedPreferences("favoritos", Context.MODE_PRIVATE)
+        supportActionBar?.title =title
+
+
     }
+
+    private fun searchCategoryProduct(id: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://dummyjson.com/products/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service: CategoryProduct = retrofit.create(CategoryProduct ::class.java)
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = service.searchById(id)
+
+
+            runOnUiThread {
+                val responseBody = response.body()
+                if (responseBody != null) {
+                    list = responseBody
+                    visualReform()
+                } else {
+                    Log.i("http","null")
+                }
+
+            }
+        }
+    }
+
 }

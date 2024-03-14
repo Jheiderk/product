@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.productapp.R
 import com.example.productapp.databinding.ActivityMainBinding
 
@@ -31,6 +32,25 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
+
+    }
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.exit)
+        builder.setMessage(R.string.sure_or_not)
+
+        builder.setPositiveButton(R.string.sure) { dialog, _ ->
+            super.onBackPressed() // Cerrar la actividad principal (salir de la aplicación)
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(R.string.cancel) { dialog, _ ->
+            dialog.dismiss() // Cerrar el diálogo, el usuario decidió no salir
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun selected() {

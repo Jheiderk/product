@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="background">#756CCD69</color>
-    <color name="spinnerColor">#FFFFFFFF</color>
+    <color name="spinnerColor">#A62C5AA8</color>
     <color name="text_background">#261270</color>
-    <color name="blue">#FFFFFFFF</color>
-    <color name="yellow">#FFFFFFFF</color>
+    <color name="yellow">#FFDE00</color>
+    <color name="blue">#066677</color>
 </resources>

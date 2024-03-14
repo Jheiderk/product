@@ -1,10 +1,10 @@
 package com.example.productapp.activity
 
-import android.content.Context
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+
 import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.productapp.adapter.ProductAdapter
@@ -36,10 +36,10 @@ class MainActivity2 : AppCompatActivity() {
 
 
 
-        adapter = ProductAdapter(this, list, { position ->
+        adapter = ProductAdapter(list
+        ) { position ->
             adapterUI(position)
-        }, { position -> onFavorite(position) }
-        )
+        }
 
         binding.recyclerView.adapter = adapter
 
@@ -67,13 +67,9 @@ class MainActivity2 : AppCompatActivity() {
         val productList =list[position]
 
         val intent = Intent(this, MainActivity3::class.java)
-        intent.putExtra("rating", productList.rating)
-        intent.putExtra("image", productList.thumbnail)
-        intent.putExtra("stock", productList.stock)
+
         intent.putExtra("title", productList.title)
-        intent.putExtra("price", productList.price)
-        intent.putExtra("description", productList.description)
-        intent.putExtra("brand", productList.brand)
+        intent.putExtra("id", productList.id)
         startActivity(intent)
 
     }
