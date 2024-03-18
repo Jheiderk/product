@@ -14,9 +14,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         private const val SQL_CREATE_TABLE  =
             "CREATE TABLE ${ProductTable.TABLE_NAME} (" +
-                "$DATABASE_NAME_ID TEXT PRIMARY KEY, " +
-                "${ProductTable.COLUMN_TITLE} TEXT, " +
-                "${ProductTable.COLUMN_PRICE} TEXT)"
+                    "$DATABASE_NAME_ID TEXT PRIMARY KEY, " +
+                    "${ProductTable.COLUMN_TITLE} TEXT, " +
+                    "${ProductTable.COLUMN_PRICE} TEXT, " +
+                    "${ProductTable.COLUMN_RATING} TEXT, " +
+                    "${ProductTable.COLUMN_THUMBNAIL} TEXT, " +
+                    "${ProductTable.COLUMN_STOCK} TEXT, " +
+                    "${ProductTable.COLUMN_DESCRIPTION} TEXT, " +
+                    "${ProductTable.COLUMN_BRAND} TEXT)"
 
         private const val SQL_DELETE_TABLE = "DROP TABLE IF EXISTS Task"
     }

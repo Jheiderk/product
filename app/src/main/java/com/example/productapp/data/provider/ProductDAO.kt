@@ -20,6 +20,11 @@ class ProductDAO(context: Context) {
                 put(DatabaseHelper.DATABASE_NAME_ID, task.id)
                 put(ProductTable.COLUMN_TITLE, task.title)
                 put(ProductTable.COLUMN_PRICE, task.price)
+                put(ProductTable.COLUMN_RATING, task.rating)
+                put(ProductTable.COLUMN_THUMBNAIL, task.thumbnail)
+                put(ProductTable.COLUMN_STOCK, task.stock)
+                put(ProductTable.COLUMN_DESCRIPTION, task.description)
+                put(ProductTable.COLUMN_BRAND, task.brand)
             }
             val newRowId = db.insertOrThrow(ProductTable.TABLE_NAME, null, values)
             Log.i("DATABASE", "New record id: $newRowId")
@@ -40,9 +45,16 @@ class ProductDAO(context: Context) {
         val db = databaseManager.writableDatabase
 
 
-        var values = ContentValues()
-        values.put(ProductTable.COLUMN_TITLE, task.title)
-        values.put(ProductTable.COLUMN_PRICE, task.price)
+        var values = ContentValues().apply {
+            put(ProductTable.COLUMN_TITLE, task.title)
+            put(ProductTable.COLUMN_PRICE, task.price)
+            put(ProductTable.COLUMN_RATING, task.rating)
+            put(ProductTable.COLUMN_THUMBNAIL, task.thumbnail)
+            put(ProductTable.COLUMN_STOCK, task.stock)
+            put(ProductTable.COLUMN_DESCRIPTION, task.description)
+            put(ProductTable.COLUMN_BRAND, task.brand)
+
+        }
 
         var updatedRows = db.update(ProductTable.TABLE_NAME, values, "${DatabaseHelper.DATABASE_NAME_ID}=?", arrayOf(task.id.toString()))
         Log.i("DATABASE", "Updated records: $updatedRows"
@@ -81,7 +93,15 @@ class ProductDAO(context: Context) {
             val id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.DATABASE_NAME_ID))
             val taskName = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_TITLE))
             val taskPrice = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_PRICE))
-            task = ProductTable(id, taskName, taskPrice)
+            val taskRating = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_RATING))
+            val taskThumbnail = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_THUMBNAIL))
+            val taskStock = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_STOCK))
+            val taskDescription = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_DESCRIPTION))
+            val taskBrand = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_BRAND))
+
+
+
+            task = ProductTable(id, taskName, taskPrice, taskRating, taskThumbnail, taskStock, taskDescription, taskBrand)
         }
         cursor.close()
         db.close()
@@ -111,9 +131,14 @@ class ProductDAO(context: Context) {
             val id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.DATABASE_NAME_ID))
             val taskName = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_TITLE))
             val taskPrice = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_PRICE))
+            val taskRating = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_RATING))
+            val taskThumbnail = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_THUMBNAIL))
+            val taskStock = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_STOCK))
+            val taskDescription = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_DESCRIPTION))
+            val taskBrand = cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_BRAND))
 
 
-            val task: ProductTable = ProductTable(id, taskName, taskPrice)
+            val task: ProductTable = ProductTable(id, taskName, taskPrice, taskRating, taskThumbnail, taskStock, taskDescription, taskBrand)
 
             list.add(task)
         }

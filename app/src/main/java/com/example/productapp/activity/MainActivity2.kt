@@ -53,9 +53,7 @@ class MainActivity2 : AppCompatActivity() {
 
     }
 
-    private fun onFavorite(position: Int) {
-        TODO("Not yet implemented")
-    }
+
 
 
 
@@ -76,7 +74,6 @@ class MainActivity2 : AppCompatActivity() {
 
         val intent = Intent(this, MainActivity3::class.java)
 
-        intent.putExtra("title", productList.title)
         intent.putExtra("id", productList.id)
         startActivity(intent)
 
@@ -124,7 +121,7 @@ class MainActivity2 : AppCompatActivity() {
     private fun productUI(list: Product) {
 
 
-        selection = ProductTable(list.id.toInt(),list.title,list.price )
+        selection = ProductTable(list.id.toInt(),list.title,list.price,list.rating,list.thumbnail,list.stock,list.description,list.brand )
         listProduct()
 
 
