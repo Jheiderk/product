@@ -4,12 +4,15 @@ package com.example.productapp.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.productapp.adapter.ProductAdapter
 import com.example.productapp.data.CategoryProduct
 import com.example.productapp.data.Product
+import com.example.productapp.data.ProductTable
+import com.example.productapp.data.provider.ProductDAO
 import com.example.productapp.databinding.ActivityMain2Binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +24,9 @@ class MainActivity2 : AppCompatActivity() {
     private var list:List<Product> = listOf()
     private lateinit var binding: ActivityMain2Binding
     private lateinit var adapter: ProductAdapter
+    private lateinit var selection: ProductTable
+    private val taskDAO= ProductDAO(this)
+
 
     private var title: String? =null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +72,8 @@ class MainActivity2 : AppCompatActivity() {
     fun adapterUI(position:Int){
         val productList =list[position]
 
+        productUI(productList)
+
         val intent = Intent(this, MainActivity3::class.java)
 
         intent.putExtra("title", productList.title)
@@ -97,5 +105,28 @@ class MainActivity2 : AppCompatActivity() {
 
             }
         }
+    }
+    private fun listProduct() {
+
+        val existingProduct = taskDAO.find(selection.id.toString())
+        if (existingProduct != null) {
+            Log.i("DATABASE", "El producto con ID ${existingProduct.id} ya existe en la tabla.")
+            // Aquí decides qué hacer con el producto existente
+            // Puedes actualizarlo, notificar al usuario, etc.
+        } else {
+            taskDAO.insert(selection)
+            Log.i("DATABASE", "Nuevo producto insertado: $selection")
+        }
+
+
+    }
+
+    private fun productUI(list: Product) {
+
+
+        selection = ProductTable(list.id.toInt(),list.title,list.price )
+        listProduct()
+
+
     }
 }

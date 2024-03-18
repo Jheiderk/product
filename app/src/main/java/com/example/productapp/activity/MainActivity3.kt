@@ -7,8 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import com.example.productapp.R
+import com.example.productapp.activity.utils.DatabaseHelper
+
 import com.example.productapp.data.CategoryProduct
 import com.example.productapp.data.Product
+import com.example.productapp.data.ProductTable
+import com.example.productapp.data.provider.ProductDAO
 import com.example.productapp.databinding.ActivityMain3Binding
 
 import com.squareup.picasso.Picasso
@@ -18,16 +22,18 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class MainActivity3 : AppCompatActivity() {
 
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMain3Binding
     private lateinit var list:Product
-
-
+    private val productDAO = ProductDAO(this)
+    private lateinit var selection: MutableList<ProductTable>
     private var id: String?=null
     private var title: String?=null
+    private lateinit var dbHelper: DatabaseHelper
 
 
 
@@ -61,8 +67,8 @@ class MainActivity3 : AppCompatActivity() {
 
 
 
-        binding.textTitle.text= list.title
-        binding.textPrice2.text=getString(R.string.dollar, list.price)
+        //binding.textTitle.text= list.title
+        //binding.textPrice2.text=getString(R.string.dollar, list.price)
         binding.ratingText.text=list.rating
         Picasso.get().load(list.thumbnail).into(binding.image)
         binding.stockText.text=list.stock
@@ -98,11 +104,30 @@ class MainActivity3 : AppCompatActivity() {
         title= intent.getStringExtra("title")
         id= intent.getStringExtra("id")
 
+        val specificData = productDAO.find(id!!)
+
+
+
+
+        displayProductData(specificData)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         sharedPreferences = getSharedPreferences("favoritos", Context.MODE_PRIVATE)
         supportActionBar?.title =title
 
 
+    }
+    private fun displayProductData(productData: ProductTable?) {
+        if (productData != null) {
+            // Mostrar los datos del producto en la interfaz de usuario
+            binding.textTitle.text = productData.title
+            binding.textPrice2.text = getString(R.string.dollar, productData.price)
+            Log.i("DATABASE", productData.title)
+            // Otros campos de datos
+        } else {
+
+            // Manejar el caso en el que no se obtengan datos de la base de datos
+        }
     }
 
     private fun searchCategoryProduct(id: String) {
