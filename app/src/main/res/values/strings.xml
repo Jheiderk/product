@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">productApp</string>
+    <string name="app_name">Product</string>
 
     <string-array name="option">
         <item>smartphones</item>
@@ -36,6 +36,7 @@
     <string name="sure_or_not">Are you sure you want to go out?</string>
     <string name="sure">Sure</string>
     <string name="cancel">Cancel</string>
+    <string name="failed">Failed to connect to server. Please check your internet connection.</string>
 
 
 

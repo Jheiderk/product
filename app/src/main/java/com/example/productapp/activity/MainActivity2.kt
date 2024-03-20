@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.util.Log
 
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.productapp.R
 import com.example.productapp.adapter.ProductAdapter
 import com.example.productapp.data.CategoryProduct
 import com.example.productapp.data.Product
@@ -40,8 +42,6 @@ class MainActivity2 : AppCompatActivity() {
 
         searchCategoryProduct(title!!)
 
-
-
         adapter = ProductAdapter(list
         ) { position ->
             adapterUI(position)
@@ -52,9 +52,6 @@ class MainActivity2 : AppCompatActivity() {
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
     }
-
-
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -80,28 +77,37 @@ class MainActivity2 : AppCompatActivity() {
     }
 
 
-
-
     private fun searchCategoryProduct(query: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://dummyjson.com/products/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val service: CategoryProduct = retrofit.create(CategoryProduct ::class.java)
-
+        val service: CategoryProduct = retrofit.create(CategoryProduct::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.searchByName(query)
 
+            try {
+                val response = service.searchByName(query)
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        list = response.body()?.results!!
+                        adapter.updateItems(response.body()?.results)
 
-            runOnUiThread {
-                list = response.body()?.results!!
-                adapter.updateItems(response.body()?.results)
+                    } else {
+                        // La respuesta no fue exitosa, manejar el caso en consecuencia
+                        showAlertDialog(getString(R.string.failed))
 
+                    }
+                }
+            } catch (e: Exception) {
+                // Ocurrió una excepción, manejarla de acuerdo a tus necesidades
+                showAlertDialog(getString(R.string.failed))
 
             }
+
         }
+
     }
     private fun listProduct() {
 
@@ -115,7 +121,6 @@ class MainActivity2 : AppCompatActivity() {
             Log.i("DATABASE", "Nuevo producto insertado: $selection")
         }
 
-
     }
 
     private fun productUI(list: Product) {
@@ -124,6 +129,17 @@ class MainActivity2 : AppCompatActivity() {
         selection = ProductTable(list.id.toInt(),list.title,list.price,list.rating,list.thumbnail,list.stock,list.description,list.brand )
         listProduct()
 
+    }
 
+    private fun showAlertDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                dialog.dismiss()
+                finish() // Finalizar la actividad actual y volver a la actividad anterior
+            }
+            .setCancelable(false)
+            .show()
     }
 }
